@@ -1,0 +1,61 @@
+# Visual Studio / .NET
+.vs/
+**/.vs/
+.vscode/
+.idea/
+
+# Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+
+# User files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# Runtime files
+*.pid
+*.seed
+
+# EF Core / database files
+*.db
+*.db-journal
+
+# NuGet
+*.nupkg
+packages/
+
+# Secrets and local config
+appsettings.Development.json
+secrets.json
+.env
+
+# OneDrive / temp files
+~$*
+*.tmp
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Ignore VS FileContentIndex which may be locked
+.vs/**/FileContentIndex/
+
+# Ignore JetBrains Rider caches
+.idea/
+
+# Node modules (if any)
+node_modules/
+
+# Ignore compiled Python files (if any)
+__pycache__/
+*.pyc
