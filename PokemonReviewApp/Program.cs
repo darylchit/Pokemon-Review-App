@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PokemonReviewApp;
 using PokemonReviewApp.Data;
+using PokemonReviewApp.Interfaces;
+using PokemonReviewApp.Repository;
 
 var builder = WebApplication.CreateBuilder(args); // Create a builder for the web application, a builder is used to configure services and the app
 
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args); // Create a builder for the we
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>(); // Seed service, Dependency Injection
+builder.Services.AddScoped<IPokemonRepository, PokemonRepository>(); // Dependency Injection, tells the app that whenever
+                                                                     // it sees IPokemonRepository, it should use PokemonRepository as the implementation
 // Transient means create a new instance every time it's requested
 // Scoped means create one instance per request
 // Singleton means create one instance for the entire application lifetime

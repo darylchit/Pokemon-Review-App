@@ -8,3 +8,4 @@
         public  Owner Owner { get; set; }
     }
 }
+// 3. Creating the PokemonOwner Model for Many-to-Many Relationships

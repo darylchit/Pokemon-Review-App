@@ -3,7 +3,7 @@ using PokemonReviewApp.Models;
 
 // Create after creating models
 
-namespace PokemonReviewApp.Data
+namespace PokemonReviewApp.Data // 4. Installing Entity Framework Core and Setting Up the Data Context
 {
     public class DataContext : DbContext // 1 DB SETUP
     {
