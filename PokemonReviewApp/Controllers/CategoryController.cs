@@ -9,7 +9,7 @@ namespace PokemonReviewApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : Controller
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository; // Looks in ICategoryRepository.cs for definition
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet] // 4. The GetPokemons method is decorated with the [HttpGet] attribute, indicating that it will handle HTTP GET requests.
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))] 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CategoryDto>))]
         public IActionResult GetCategories()
         {
             var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
@@ -30,10 +30,10 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
 
             return Ok(categories); // It checks if the model state is valid. If it is not valid, it returns a BadRequest response with the model state
-                                 // errors.
+                                   // errors.
         }
         [HttpGet("{categoryId}")]
-        [ProducesResponseType(200, Type = typeof(Category))] 
+        [ProducesResponseType(200, Type = typeof(CategoryDto))]
         [ProducesResponseType(400)]
 
         public IActionResult GetCategory(int categoryId)
@@ -63,4 +63,3 @@ namespace PokemonReviewApp.Controllers
         }
     }
 }
-

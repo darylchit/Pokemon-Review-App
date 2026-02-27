@@ -38,7 +38,7 @@ namespace PokemonReviewApp.Controllers // 7. Creating the Pokemon Controller and
         }
 
         [HttpGet] // 4. The GetPokemons method is decorated with the [HttpGet] attribute, indicating that it will handle HTTP GET requests.
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))] // 5. The [ProducesResponseType] attribute specifies the expected
+        [ProducesResponseType(200, Type = typeof(IEnumerable<PokemonDto>))] // 5. The [ProducesResponseType] attribute specifies the expected
                                                                          // HTTP status code and the type of data that will be returned by
                                                                          // the GetPokemons method.
         public IActionResult GetPokemons() // 6. The GetPokemons method is a public method that returns an IActionResult.
@@ -77,7 +77,7 @@ namespace PokemonReviewApp.Controllers // 7. Creating the Pokemon Controller and
         // and it also makes sure that we are not sending data that we don't want to send.
 
         [HttpGet("{pokeId}")]
-        [ProducesResponseType(200, Type = typeof(Pokemon))] // 1. The GetPokemon method is decorated with the [HttpGet("{pokeId}")] attribute,
+        [ProducesResponseType(200, Type = typeof(PokemonDto))] // 1. The GetPokemon method is decorated with the [HttpGet("{pokeId}")] attribute,
                                                             // indicating that it
                                                             // will handle HTTP GET requests with a route parameter called "pokeId".
         [ProducesResponseType(400)]

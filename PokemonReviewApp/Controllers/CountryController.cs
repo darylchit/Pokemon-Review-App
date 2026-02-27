@@ -7,7 +7,9 @@ using PokemonReviewApp.Repository;
 
 namespace PokemonReviewApp.Controllers
 {
-    public class CountryController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CountryController : ControllerBase
     {
         private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
@@ -19,7 +21,7 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet] // 4. The GetPokemons method is decorated with the [HttpGet] attribute, indicating that it will handle HTTP GET requests.
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Country>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CountryDto>))]
 
         public IActionResult GetCountries()
         {
@@ -33,11 +35,12 @@ namespace PokemonReviewApp.Controllers
                                   // errors.
         }
 
-        [HttpGet("{categoryId}")]
-        [ProducesResponseType(200, Type = typeof(Category))]
+        [HttpGet("{countryId}")] // Decorator for the GetCategory method, indicating that it will handle
+                                  // HTTP GET requests with a route parameter named categoryId. The method
+        [ProducesResponseType(200, Type = typeof(CountryDto))]
         [ProducesResponseType(400)]
 
-        public IActionResult GetCategory(int countryId)
+        public IActionResult GetCountry(int countryId)
         {
             if (!_countryRepository.CountryExists(countryId)) // Validations
                 return NotFound();
@@ -48,9 +51,10 @@ namespace PokemonReviewApp.Controllers
 
             return Ok(country);
         }
-        [HttpGet("owner/{ownerId}")]
+        [HttpGet("/owners/{ownerId}")] // Decorator for the GetCountryOfAnOwner method, indicating that it will handle
+                                     // HTTP GET requests with a route parameter named ownerId. The method retrieves the country associated with a specific owner.
         [ProducesResponseType(400)]
-        [ProducesResponseType(200, Type = typeof(Country))]
+        [ProducesResponseType(200, Type = typeof(CountryDto))]
         public IActionResult GetCountryOfAnOwner(int ownerId)
         {
             var country = _mapper.Map<CountryDto>
