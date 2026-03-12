@@ -3,6 +3,7 @@ using PokemonReviewApp;
 using PokemonReviewApp.Data;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Repository;
+using System.Text.Json.Serialization;
 
 // This file is the entry point of the application, it is responsible for configuring services and the app itself.
 // It sets up the dependency injection, configures the database connection, and defines the HTTP request pipeline.
@@ -13,11 +14,20 @@ var builder = WebApplication.CreateBuilder(args); // Create a builder for the we
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>(); // Seed service, Dependency Injection
+builder.Services.AddControllers().AddJsonOptions(x => 
+x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // This line configures the JSON serialization options for the controllers.
+                                                                           // It sets the ReferenceHandler to IgnoreCycles, which means that if there are
+                                                                           // circular references in the object graph being serialized, it will ignore
+                                                                           // them instead of throwing an exception. This is useful to prevent issues
+                                                                           // when serializing complex objects that may have circular references.
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>(); // Dependency Injection, tells the app that whenever IPokemonRepository is requested, it should provide
                                                                      // an instance of PokemonRepository. The scoped lifetime means that a new instance of PokemonRepository will be
                                                                      // created for each HTTP request and shared within that request.
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>(); 
 builder.Services.AddScoped<ICountryRepository, CountryRepository>(); 
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+builder.Services.AddScoped<IReviewerRepository, ReviewerRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());                                                                     
 // Transient means create a new instance every time it's requested
 // Scoped means create one instance per request
