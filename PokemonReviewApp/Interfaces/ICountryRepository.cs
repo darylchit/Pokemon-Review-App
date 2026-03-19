@@ -9,5 +9,8 @@ namespace PokemonReviewApp.Interfaces
         Country GetCountryByOwner(int ownerId); // Get a country based on the owner ID, useful for finding the country associated with a specific owner
         ICollection<Owner> GetOwnersFromACountry(int countryId); // Get a list of owners from a specific country, useful for finding all owners associated with a specific country
         bool CountryExists(int id); // Check if a country exists by its ID, useful for validating input and ensuring that operations are performed on valid countries
+        bool CreateCountry(Country country); // with CREATE pass in entire entity/object and EF will take care of it
+        bool Save();
+
     }
 }

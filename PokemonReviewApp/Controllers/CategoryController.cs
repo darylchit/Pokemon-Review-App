@@ -61,5 +61,50 @@ namespace PokemonReviewApp.Controllers
 
             return Ok(pokemons); // Now we go to MappingProfile.cs in Helper to make sure we have a map for PokemonDto and CategoryDto
         }
+
+
+
+        // POST method to create a new category
+        // -------------------------------------------------------------------------------------------------------------------------------
+        // The CreateCategory method is decorated with the [HttpPost] attribute, indicating that
+        // it will handle HTTP POST requests. It takes a CategoryDto object as input from the request body.
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
+        {
+            if (categoryCreate == null)
+                return BadRequest(ModelState);
+
+            var category = _categoryRepository.GetCategories()
+                .Where(c => c.Name.Trim().ToUpper() == categoryCreate.Name.TrimEnd().ToUpper()) // checking to see if instance already exists
+                .FirstOrDefault();
+
+            if(category != null)
+            {
+                ModelState.AddModelError("", "Category already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); // checking if the model state is valid. If it is not valid,
+                                               // it returns a BadRequest response with the model state errors.
+
+            var categoryMap = _mapper.Map<Category>(categoryCreate); // If the model state is valid, it maps the CategoryDto
+                                                                     // to a Category entity using AutoMapper. This is done to convert the
+                                                                     // DTO into a format that can be saved to the database.
+
+            if (!_categoryRepository.CreateCategory(categoryMap)) // It then calls the CreateCategory method of the _categoryRepository
+                                                                  // to save the new category to the database. If the creation fails,
+            {
+                ModelState.AddModelError("", "Something went wrong while saving"); // it adds a model error to the ModelState and
+                                                                                   // returns a 500 Internal Server Error
+                                                                                   // response with the model state errors.
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Sucessfully Created");
+        }
     }
 }

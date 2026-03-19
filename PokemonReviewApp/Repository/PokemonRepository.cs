@@ -21,6 +21,32 @@ namespace PokemonReviewApp.Repository // 5. Repository Pattern & Dependency Inje
                                 // DataContext object, allowing the repository to use it for database operations.
         }
 
+        public bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        {
+            var pokemonOwnerEntity = _context.Owners.Where(a => a.Id == ownerId).FirstOrDefault();
+            var category = _context.Categories.Where(a => a.Id == categoryId).FirstOrDefault();
+
+            var pokemonOwner = new PokemonOwner() // object creation for the PokemonOwner class, which represents
+                                                  // the relationship between a Pokemon and its owner.
+                                                  // It sets the Owner property to the retrieved pokemonOwnerEntity
+                                                  // and the Pokemon property to the provided pokemon object.
+            {
+                Owner = pokemonOwnerEntity,// This line assigns the retrieved pokemonOwnerEntity to the Owner property of the pokemonOwner object.
+                Pokemon = pokemon,// This line assigns the provided pokemon object to the Pokemon property of the pokemonOwner object.
+            };
+
+            _context.Add(pokemonOwner); // Add object to database after creating
+
+            var pokemonCategory = new PokemonCategory()
+            {
+                Category = category,
+                Pokemon = pokemon,
+            };
+
+            _context.Add(pokemonCategory);
+            _context.Add(pokemon);
+        }
+
         public Pokemon GetPokemon(int id) // These come from the IPokemonRepository interface, which defines the contract for the repository.
                                           // They appeared
                                           // after implementing the interface, The IPokemonRepository on line 7 was red and I clicked implement interface
@@ -65,6 +91,12 @@ namespace PokemonReviewApp.Repository // 5. Repository Pattern & Dependency Inje
             return _context.Pokemons.Any(p => p.Id == pokeId); // This method checks if a Pokemon with a specific Id exists
                                                                // in the database. It returns true if a Pokemon with the given
                                                                // Id exists, and false otherwise.
+        }
+
+        public bool Save()
+        {
+            var saved = _contnext.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

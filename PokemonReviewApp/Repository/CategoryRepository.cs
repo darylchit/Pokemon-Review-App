@@ -16,6 +16,17 @@ namespace PokemonReviewApp.Repository
             return _context.Categories.Any(c => c.Id == id); // context = code that sits on top of DB and gives us access to DB
         } // Any is going to return bool, if it exists
 
+        public bool CreateCategory(Category category)
+        {
+            // Change Tracker
+            // add, updating, modifying, 
+            // connected vs disconnected
+            // EntityState.Added, beware of this
+
+            _context.Add(category);
+            return Save();
+        }
+
         public ICollection<Category> GetCategories() //ICollection returns multiple
         {
             return _context.Categories.ToList();
@@ -29,6 +40,12 @@ namespace PokemonReviewApp.Repository
         public ICollection<Pokemon> GetPokemonByCategory(int categoryId)
         {
             return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PokemonReviewApp.Models;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Interfaces
 {
@@ -9,5 +10,11 @@ namespace PokemonReviewApp.Interfaces
         Pokemon GetPokemon(string name);
         decimal GetPokemonRating(int pokeId);
         bool PokemonExists(int pokeId);
+
+        // Create Methods
+
+        bool CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
+        bool Save();
+
     }
 }

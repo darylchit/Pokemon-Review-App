@@ -19,6 +19,12 @@ namespace PokemonReviewApp.Repository
             return _context.Countries.Any(c => c.Id == id); // Check if any country in the database has the specified ID, returning true if it exists and false otherwise.
         }
 
+        public bool CreateCountry(Country country)
+        {
+            _context.Add(country); // Add the provided country object to the database context, marking it for insertion into the database when changes are saved.
+            return Save();
+        }
+
         public ICollection<Country> GetCountries()
         {
             return _context.Countries.ToList(); // Retrieve all countries from the database and return them as a list.
@@ -37,6 +43,12 @@ namespace PokemonReviewApp.Repository
         public ICollection<Owner> GetOwnersFromACountry(int countryId)
         {
             return _context.Owners.Where(c => c.Country.Id == countryId).ToList(); // Retrieve all owners from the database whose associated country's ID matches the specified country ID, returning them as a list.
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges(); // Save the changes made to the database context, returning the number of state entries written to the database.
+            return saved > 0 ? true : false; // Return true if one or more entries were saved to the database, indicating that the save operation was successful, and false otherwise.
         }
     }
 }
